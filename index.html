@@ -164,24 +164,21 @@
       }
     </style>
     <script>
-      var fullscreenStatus = false;
-      var currentPage = 'checkin-market';
+      var currentPage = 'checkin';
+      var currentPlace = 'editDisplay'
+      var edit_place = ''
       // const _ID = document.getElementById
       // const _$ = document.getElementsByClassName
       function fullscreen() {
-        if (!fullscreenStatus) {
-          fullscreenStatus = true
-
-          try {
-            document.documentElement.requestFullscreen()
-          } catch(err) {
-            console.log(err)
-          }
+        try {
+          document.documentElement.requestFullscreen()
+        } catch(err) {
+          console.log(err)
         }
       }
       // 'health-code' --> 'checkin-company' --> 'checkin-home' --> 'checkin-market' --> 'health-code'
       function switchPage () {
-        if (currentPage === 'checkin-market') {
+        if (currentPage === 'checkin') {
           // health-code page
           console.log(2)
           document.getElementById('health-code').style.display = 'block'
@@ -198,8 +195,7 @@
           return
         }
         if (currentPage === 'health-code') {
-          // checkin-company page
-          console.log(1)
+          // checkin page
           document.getElementById('health-code').style.display = 'none'
           document.getElementById('check-in').style.display = 'block'
           document.getElementsByClassName('time-string')[0].style.display = 'none'
@@ -209,27 +205,23 @@
           document.getElementById('checkin-vaccine-container').style.display = 'block'
           document.getElementsByClassName('checkin-vaccine-time')[0].innerHTML = `${formatterDate('health-code')}`
           document.getElementById('checkin-place-container').style.display = 'flex'
-          document.getElementsByClassName('checkin-place-string')[0].innerHTML = "新一代产业园"
-          currentPage = 'checkin-company'
+
+          const places = ['新一代产业园', '翠竹苑小区', '华润万家翠竹店', '4号线上梅林地铁站', '3号线翠竹站', 'edit', 'editDisplay']
+          const next_place = places[(places.indexOf(currentPlace) - 0 + 1) % places.length]
+
+          currentPlace = next_place
+
+          if (currentPlace === 'edit') {
+            edit_place = window.prompt('请输入地点')
+          } else if (currentPlace === 'editDisplay') {
+            currentPage = 'checkin'
+          }
+
+          document.getElementsByClassName('checkin-place-string')[0].innerHTML = (currentPlace !== 'edit' && currentPlace !== 'editDisplay') ? currentPlace : edit_place
           
           return
         }
-        if (currentPage === 'checkin-company') {
-          // checkin-company page
-          console.log(3)
-          document.getElementById('checkin-place-container').style.display = 'flex'
-          document.getElementsByClassName('checkin-place-string')[0].innerHTML = "翠竹苑小区"
-          currentPage = 'checkin-home'
-          return
-        }
-        if (currentPage === 'checkin-home') {
-          // checkin-company page
-          console.log(3)
-          document.getElementById('checkin-place-container').style.display = 'flex'
-          document.getElementsByClassName('checkin-place-string')[0].innerHTML = "华润万家翠竹店"
-          currentPage = 'checkin-market'
-          return
-        }
+
 
       }
       const formatterDate = (flag) => {
