@@ -1,7 +1,7 @@
 # Health-Code-Simulator
 粤康码Simulator
 
-health code simulate or check-in
+health code or check-in simulate
 
 steps:
 
